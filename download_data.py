@@ -17,14 +17,13 @@ FOLDERS = {
     "team_details": "1NI1A__ZNfd-dFDXeTWJzX3GO0B9H_McZ",
     "transfer_history": "1UysW0OF00PuCDoHhY-OIp6lXwsOzVV-X",
 }
- #solve issue 
+ 
 RAW = Path("data/raw")
 RAW.mkdir(parents=True, exist_ok=True)
 
 def download_folder(name: str, folder_id: str):
     out = RAW / name
     out.mkdir(parents=True, exist_ok=True)
-    # download the entire folder into data/raw/<name>
     gdown.download_folder(id=folder_id, output=str(out), quiet=False, use_cookies=False)
 
 def main():
