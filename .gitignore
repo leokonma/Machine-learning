@@ -1,0 +1,35 @@
+# Data folders
+data/raw/
+data/interim/
+data/processed/
+
+# Common data files
+*.csv
+*.tsv
+*.parquet
+*.xlsx
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Python stuff
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.h5
+
+# Virtual environment
+.venv/
+env/
+venv/
+
+# Jupyter / VS Code
+.ipynb_checkpoints/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
