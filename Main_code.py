@@ -29,3 +29,13 @@ for name, df in tables.items():
     print(f"\n=== {name.upper()} ===")
     print("Column types:\n", df.dtypes)    
     print("Summary stats:\n", df.describe(include='all').transpose().head(10))
+
+injured = tables["player_injuries"]   
+
+market_value = tables["player_latest_market_value"]
+
+player_ind_perf = tables["player_performances"]
+
+team_info = tables["team_competitions_seasons"]
+
+team_details = tables["team_details"]
