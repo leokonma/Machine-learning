@@ -33,8 +33,29 @@ player_injured = tables["player_injuries"]
 player_performance = tables["player_performances"]
 market_value = tables["player_latest_market_value"]
 
+# data cleaning 
+
+#team season & details related df cleaning, we segment the clubs belonging to the big 5 leagues  
+top_europe_leagues_id = [
+    "GB1",
+    "ES1",
+    "IT1",
+    "L1",
+    "FR1"]
+
+df_teams_season = team_season[team_season["competition_id"].isin(top_europe_leagues_id)]
+df_teams_details = team_details[team_details["competition_id"].isin(top_europe_leagues_id)]
+df_teams_details["team_name"] = df_teams_details["club_name"].str.replace(r"\s*\(\d+\)", "", regex=True)
+
+#player related df cleaning
+df_players_profile = player_profiles[player_profiles["current_club_name"].isin(df_teams_details["team_name"])]
+df_player_injured = player_injured[player_injured["player_id"].isin(df_players_profile["player_id"])]
+df_player_performance = player_performance[player_performance["player_id"].isin(df_players_profile["player_id"])]
+df_player_market_values = market_value[market_value["player_id"].isin(df_players_profile["player_id"])]
+
+
 # age distribution 
-df = player_profiles.copy()
+df = df_players_profile.copy()
 df["date_of_birth"] = pd.to_datetime(df["date_of_birth"], errors="coerce")
 df["age"] = ((pd.to_datetime("today") - df["date_of_birth"]).dt.days / 365.25).round(1)
 
@@ -57,7 +78,7 @@ fig_pos.show()
 
 
 #total player mkv
-df = market_value.copy()
+df = df_player_market_values.copy()
 df = df[df["value"] > 0]
 cap = df["value"].quantile(0.99)
 df_cap = df[df["value"] <= cap]
@@ -87,17 +108,4 @@ fig_team = px.histogram(
     labels={"squad_value": "Squad Value (€)"}
 )
 fig_team.show()
-
-# data cleaning 
-
-#team season & details cleaning, we just ìcking the clubs belonging to the big 5 leagues  
-top_europe_leagues_id = [
-    "GB1",
-    "ES1",
-    "IT1",
-    "L1",
-    "FR1"]
-
-df_teams_season = team_season[team_season["competition_id"].isin(top_europe_leagues_id)]
-df_teams_details = team_details[team_details["competition_id"].isin(top_europe_leagues_id)]
 
