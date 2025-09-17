@@ -53,6 +53,30 @@ df_player_injured = player_injured[player_injured["player_id"].isin(df_players_p
 df_player_performance = player_performance[player_performance["player_id"].isin(df_players_profile["player_id"])]
 df_player_market_values = market_value[market_value["player_id"].isin(df_players_profile["player_id"])]
 
+filtered_tables = {
+    "df_teams_season": df_teams_season,
+    "df_teams_details": df_teams_details,
+    "df_players_profile": df_players_profile,
+    "df_player_injured": df_player_injured,
+    "df_player_performance": df_player_performance,
+    "df_player_market_values": df_player_market_values,
+}
+
+for name, df in filtered_tables.items():
+    print(f"\n=== {name.upper()} ===")
+    print("Shape:", df.shape)
+    print("Columns:", df.columns.tolist()) 
+
+
+for name, df in filtered_tables.items():
+    print(f"\n{name} - Missing values:")
+    print(df.isna().sum().sort_values(ascending=False))
+
+
+for name, df in filtered_tables.items():
+    print(f"\n=== {name.upper()} ===")
+    print("Column types:\n", df.dtypes)    
+    print("Summary stats:\n", df.describe(include='all').transpose().head(10))  
 
 # age distribution 
 df = df_players_profile.copy()
