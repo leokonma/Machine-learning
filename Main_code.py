@@ -26,13 +26,12 @@ for name, df in tables.items():
     print("Column types:\n", df.dtypes)    
     print("Summary stats:\n", df.describe(include='all').transpose().head(10))
 
-player_injured = tables["player_injuries"]   
-market_value = tables["player_latest_market_value"]
-player_performance = tables["player_performances"]
 team_season = tables["team_competitions_seasons"]
 team_details = tables["team_details"]
 player_profiles = tables["player_profiles"]
-
+player_injured = tables["player_injuries"]   
+player_performance = tables["player_performances"]
+market_value = tables["player_latest_market_value"]
 
 # age distribution 
 df = player_profiles.copy()
@@ -55,4 +54,50 @@ fig_pos = px.histogram(
 )
 fig_pos.update_xaxes(categoryorder="total descending")  # order by frequency
 fig_pos.show()
+
+
+#total player mkv
+df = market_value.copy()
+df = df[df["value"] > 0]
+cap = df["value"].quantile(0.99)
+df_cap = df[df["value"] <= cap]
+fig = px.histogram(
+    df_cap, x="value", nbins=50,
+    title="Distribution of Player Market Values (0–99th percentile)",
+    labels={"value": "Market Value (€)"}
+)
+fig.show()
+
+
+# keep latest value per player
+latest_values = df.sort_values("date_unix").groupby("player_id").tail(1)
+
+# join with player profiles to get team_id
+latest_values = latest_values.merge(
+    player_profiles[["player_id", "current_club_id"]],
+    on="player_id", how="left"
+)
+
+# total squad value per team
+team_value = latest_values.groupby("current_club_id")["value"].sum().reset_index(name="squad_value")
+
+fig_team = px.histogram(
+    team_value, x="squad_value", nbins=40,
+    title="Distribution of Total Squad Market Value",
+    labels={"squad_value": "Squad Value (€)"}
+)
+fig_team.show()
+
+# data cleaning 
+
+#team season & details cleaning, we just ìcking the clubs belonging to the big 5 leagues  
+top_europe_leagues_id = [
+    "GB1",
+    "ES1",
+    "IT1",
+    "L1",
+    "FR1"]
+
+df_teams_season = team_season[team_season["competition_id"].isin(top_europe_leagues_id)]
+df_teams_details = team_details[team_details["competition_id"].isin(top_europe_leagues_id)]
 
