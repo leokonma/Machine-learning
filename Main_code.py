@@ -79,17 +79,34 @@ for name, df in filtered_tables.items():
     print("Summary stats:\n", df.describe(include='all').transpose().head(10))  
 
 # age distribution 
+
 df = df_players_profile.copy()
 df["date_of_birth"] = pd.to_datetime(df["date_of_birth"], errors="coerce")
 df["age"] = ((pd.to_datetime("today") - df["date_of_birth"]).dt.days / 365.25).round(1)
 
+# Filter realistic ages (ignore 0/NaN and outliers <15 or >45)
+df_age = df[df["age"].between(15, 45)]
+
 fig_age = px.histogram(
-    df, x="age", nbins=40,
-    title="Distribution of player ages",
+    df_age, x="age", nbins=40,
+    title="Distribution of Player Ages (15–45 years)",
     labels={"age": "Age (years)"}
 )
-fig_age.add_vrect(x0=24, x1=29, fillcolor="green", opacity=0.2, line_width=0)  # highlight prime-age zone
+median_age = df_age["age"].median()
+fig_age.add_vline(
+    x=median_age, line_dash="dash", line_color="red",
+    annotation_text=f"Median: {median_age:.1f}", 
+    annotation_position="bottom right"  
+)
+# Highlight prime-age zone
+fig_age.add_vrect(
+    x0=24, x1=29, fillcolor="green", opacity=0.2, line_width=0,
+    annotation_text="Prime years", 
+    annotation_position="top left"      
+)
+
 fig_age.show()
+
 
 # position distribution 
 fig_pos = px.histogram(
@@ -104,13 +121,19 @@ fig_pos.show()
 #total player mkv
 df = df_player_market_values.copy()
 df = df[df["value"] > 0]
+
+# Winsorize at 99th percentile to avoid extreme outliers (Messi, Mbappé…)
 cap = df["value"].quantile(0.99)
 df_cap = df[df["value"] <= cap]
 fig = px.histogram(
     df_cap, x="value", nbins=50,
-    title="Distribution of Player Market Values (0–99th percentile)",
+    title="Distribution of Player Market Values (Excluding Top 1%)",
     labels={"value": "Market Value (€)"}
 )
+median_val = df_cap["value"].median()
+fig.add_vline(x=median_val, line_dash="dash", line_color="red",
+              annotation_text=f"Median: €{median_val:,.0f}", annotation_position="top right")
+
 fig.show()
 
 
@@ -136,27 +159,58 @@ fig_team.show()
 
 #player performance
 df = df_player_performance.copy()
-df_goals = df[df["goals"] > 0]
 
-fig_goals = px.histogram(
-    df_goals, x="goals", nbins=40,
-    title="Distribution of Goals per Player per Season",
-    labels={"goals": "Goals"},
-    marginal="box"
+cols = [c for c in ["goals", "assists"] if c in df.columns]
+if len(cols) == 0:
+    raise ValueError("Neither 'goals' nor 'assists' columns found in df_player_performance.")
+
+data = {}
+for c in cols:
+    s = pd.to_numeric(df[c], errors="coerce")
+    s = s[(s.notna()) & (s > 0)]
+    if not s.empty:
+        data[c] = s
+
+if len(data) == 0:
+    raise ValueError("No non-zero values found for the selected columns.")
+
+long_df = pd.concat(
+    [pd.DataFrame({"value": s, "metric": name.title()}) for name, s in data.items()],
+    ignore_index=True
 )
-fig_goals.show()
 
+medians = long_df.groupby("metric")["value"].median().to_dict()
 
-#player assists
-if "assists" in df.columns:
-    df_assists = df[df["assists"] > 0]
-    fig_assists = px.histogram(
-        df_assists, x="assists", nbins=40,
-        title="Distribution of Assists per Player per Season",
-        labels={"assists": "Assists"},
-        marginal="box"
+fig = px.histogram(
+    long_df, x="value", color="metric",
+    barmode="overlay", opacity=0.55,
+    nbins=40,
+    histnorm="probability density",   
+    title="Distribution: Goals vs Assists per Player per Season (Excluding 0)",
+    labels={"value": "Count per Season", "metric": "Metric"}
+)
+
+color_map = {"Goals": "#1f77b4", "Assists": "#ff7f0e"}  
+for metric, med in medians.items():
+    fig.add_vline(
+        x=med, line_dash="dash",
+        line_color=color_map.get(metric, "black"),
+        annotation_text=f"{metric} median: {med:.1f}",
+        annotation_position="top right" if metric == "Goals" else "bottom right",
+        annotation_font=dict(color="black", size=12, family="Arial"),  # annotation text black
     )
-    fig_assists.show()
+
+fig.update_layout(
+    legend=dict(
+        font=dict(color="black", size=12)  # legend text black
+    ),
+    legend_title_text="",
+    xaxis_title="Per-Season Count",
+    yaxis_title="Density",
+)
+
+fig.show()
+
 
 if "minutes_played" in df.columns:
     df_minutes = df[df["minutes_played"] > 0]
@@ -169,14 +223,6 @@ if "minutes_played" in df.columns:
                           annotation_text="Likely starters", annotation_position="top left")
     fig_minutes.show()
 
-if "yellow_cards" in df.columns:
-    df_yellow = df[df["yellow_cards"] > 0]
-    fig_yellow = px.histogram(
-        df_yellow, x="yellow_cards", nbins=15,
-        title="Distribution of Yellow Cards per Player (Excluding 0)",
-        labels={"yellow_cards": "Yellow Cards"}
-    )
-    fig_yellow.show()
 
 if "clean_sheets" in df.columns:
     df_cs = df[df["clean_sheets"] > 0]
@@ -196,14 +242,24 @@ fig_team_goals = px.histogram(
 )
 fig_team_goals.show()
 
+# Aggregate team-level goals conceded
+team_conceded = (
+    df_player_performance
+    .groupby(["team_id", "season_name"])["goals_conceded"]
+    .sum()
+    .reset_index()
+)
 
-team_conceded = df_player_performance.groupby(["team_id", "season_name"])["goals_conceded"].sum().reset_index()
+team_conceded = team_conceded[team_conceded["goals_conceded"] > 0]
+
 fig_conceded = px.histogram(
-        team_conceded, x="goals_conceded", nbins=30,
-        title="Distribution of Team Goals Conceded per Season",
-        labels={"goals_conceded": "Goals Conceded (Season)"}
-    )
+    team_conceded, x="goals_conceded", nbins=30,
+    title="Distribution of Team Goals Conceded per Season (Excluding 0)",
+    labels={"goals_conceded": "Goals Conceded (Season)"}
+)
+
 fig_conceded.show()
+
 
 
 
