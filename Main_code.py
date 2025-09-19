@@ -133,3 +133,78 @@ fig_team = px.histogram(
 )
 fig_team.show()
 
+
+#player performance
+df = df_player_performance.copy()
+df_goals = df[df["goals"] > 0]
+
+fig_goals = px.histogram(
+    df_goals, x="goals", nbins=40,
+    title="Distribution of Goals per Player per Season",
+    labels={"goals": "Goals"},
+    marginal="box"
+)
+fig_goals.show()
+
+
+#player assists
+if "assists" in df.columns:
+    df_assists = df[df["assists"] > 0]
+    fig_assists = px.histogram(
+        df_assists, x="assists", nbins=40,
+        title="Distribution of Assists per Player per Season",
+        labels={"assists": "Assists"},
+        marginal="box"
+    )
+    fig_assists.show()
+
+if "minutes_played" in df.columns:
+    df_minutes = df[df["minutes_played"] > 0]
+    fig_minutes = px.histogram(
+        df_minutes, x="minutes_played", nbins=50,
+        title="Distribution of Minutes Played per Player",
+        labels={"minutes_played": "Minutes"}
+    )
+    fig_minutes.add_vrect(x0=1000, x1=2500, fillcolor="blue", opacity=0.2, line_width=0,
+                          annotation_text="Likely starters", annotation_position="top left")
+    fig_minutes.show()
+
+if "yellow_cards" in df.columns:
+    df_yellow = df[df["yellow_cards"] > 0]
+    fig_yellow = px.histogram(
+        df_yellow, x="yellow_cards", nbins=15,
+        title="Distribution of Yellow Cards per Player (Excluding 0)",
+        labels={"yellow_cards": "Yellow Cards"}
+    )
+    fig_yellow.show()
+
+if "clean_sheets" in df.columns:
+    df_cs = df[df["clean_sheets"] > 0]
+    fig_cs = px.histogram(
+        df_cs, x="clean_sheets", nbins=15,
+        title="Distribution of Clean Sheets ",
+        labels={"clean_sheets": "Clean Sheets"}
+    )
+    fig_cs.show()
+
+
+team_goals = df_player_performance.groupby(["team_id", "season_name"])["goals"].sum().reset_index()
+fig_team_goals = px.histogram(
+    team_goals, x="goals", nbins=40,
+    title="Distribution of Team Total Goals per Season",
+    labels={"goals": "Team Goals (Season)"}
+)
+fig_team_goals.show()
+
+
+team_conceded = df_player_performance.groupby(["team_id", "season_name"])["goals_conceded"].sum().reset_index()
+fig_conceded = px.histogram(
+        team_conceded, x="goals_conceded", nbins=30,
+        title="Distribution of Team Goals Conceded per Season",
+        labels={"goals_conceded": "Goals Conceded (Season)"}
+    )
+fig_conceded.show()
+
+
+
+
