@@ -14,9 +14,8 @@ tables = {
 }
 
 for name, df in tables.items():
-    print(f"\n=== {name.upper()} ===")
-    print("Column types:\n", df.dtypes)    
-    print("Summary stats:\n", df.describe(include='all').transpose().head(10))
+    print(f"\n=== {name.upper()} ===")    
+    print("Summary stats:\n", df.describe(include='all').transpose())
 
 team_season = tables["team_competitions_seasons"]
 team_details = tables["team_details"]
@@ -56,8 +55,7 @@ filtered_tables = {
 
 for name, df in filtered_tables.items():
     print(f"\n=== {name.upper()} ===")
-    print("Column types:\n", df.dtypes)    
-    print("Summary stats:\n", df.describe(include='all').transpose().head(10))  
+    print("Summary stats:\n", df.describe(include='all').transpose())  
 
 # age distribution 
 
