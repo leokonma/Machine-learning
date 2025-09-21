@@ -12,14 +12,6 @@ tables = {
     "team_details": pd.read_csv("/workspaces/Machine-learning/data/raw/team_details/team_details.csv", sep=","),
     "player_profiles" : pd.read_csv("/workspaces/Machine-learning/data/raw/player_profiles/player_profiles.csv", sep=",")
 }
-for name, df in tables.items():
-    print(f"\n=== {name.upper()} ===")
-    print("Shape:", df.shape)
-    print("Columns:", df.columns.tolist()) 
-
-for name, df in tables.items():
-    print(f"\n{name} - Missing values:")
-    print(df.isna().sum().sort_values(ascending=False))
 
 for name, df in tables.items():
     print(f"\n=== {name.upper()} ===")
@@ -61,17 +53,6 @@ filtered_tables = {
     "df_player_performance": df_player_performance,
     "df_player_market_values": df_player_market_values,
 }
-
-for name, df in filtered_tables.items():
-    print(f"\n=== {name.upper()} ===")
-    print("Shape:", df.shape)
-    print("Columns:", df.columns.tolist()) 
-
-
-for name, df in filtered_tables.items():
-    print(f"\n{name} - Missing values:")
-    print(df.isna().sum().sort_values(ascending=False))
-
 
 for name, df in filtered_tables.items():
     print(f"\n=== {name.upper()} ===")
