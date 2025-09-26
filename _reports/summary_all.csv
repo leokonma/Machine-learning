@@ -1,0 +1,168 @@
+table,column,count,unique,top,freq,mean,std,min,25%,50%,75%,max,stage
+player_injuries,player_id,77871.0,,,,354195.6210142415,238923.30902059178,2857.0,170672.0,309393.0,487474.0,1406115.0,raw
+player_injuries,season_name,77871,47,24/25,14218,,,,,,,,raw
+player_injuries,injury_reason,77871,364,unknown injury,13788,,,,,,,,raw
+player_injuries,from_date,77831,4930,2021-04-01,131,,,,,,,,raw
+player_injuries,end_date,76762,4943,2024-06-30,313,,,,,,,,raw
+player_injuries,days_missed,77831.0,,,,45.09708213950739,67.79220964190884,1.0,9.0,21.0,48.0,1440.0,raw
+player_injuries,games_missed,77871.0,,,,6.074559206893452,8.61226715897905,0.0,1.0,3.0,7.0,138.0,raw
+player_latest_market_value,player_id,31026.0,,,,586351.8427447947,319292.12677503034,2857.0,329380.0,565403.5,839421.5,1415065.0,raw
+player_latest_market_value,date_unix,31026,441,2025-06-18,2406,,,,,,,,raw
+player_latest_market_value,value,31026.0,,,,1717881.9377296462,6379659.318215035,0.0,100000.0,300000.0,800000.0,200000000.0,raw
+player_performances,player_id,760125.0,,,,461049.98293701693,308163.42056601326,2857.0,212333.0,392961.0,657635.0,1431081.0,raw
+player_performances,season_name,760125,56,24/25,88010,,,,,,,,raw
+player_performances,competition_id,760125,1422,CGB,13116,,,,,,,,raw
+player_performances,competition_name,760125,1693,FA Cup,13098,,,,,,,,raw
+player_performances,team_id,760125.0,,,,12359.797388587403,20183.670080217118,1.0,762.0,3537.0,13261.0,132946.0,raw
+player_performances,team_name,760125,9404,Arsenal FC,1816,,,,,,,,raw
+player_performances,nb_in_group,760125.0,,,,9.68610031244861,10.681957283603612,1.0,2.0,4.0,15.0,50.0,raw
+player_performances,nb_on_pitch,760125.0,,,,7.79842262785726,9.622964920087139,0.0,1.0,3.0,12.0,50.0,raw
+player_performances,goals,700316.0,,,,0.9274170517309329,2.2194638477178503,0.0,0.0,0.0,1.0,50.0,raw
+player_performances,assists,760125.0,,,,0.5137089294523927,1.317154663093216,0.0,0.0,0.0,0.0,29.0,raw
+player_performances,own_goals,760125.0,,,,0.015294852820259826,0.12978774817757416,0.0,0.0,0.0,0.0,5.0,raw
+player_performances,subed_in,760125.0,,,,1.704918270021378,3.1113117285166916,0.0,0.0,0.0,2.0,38.0,raw
+player_performances,subed_out,760125.0,,,,1.9167597434632462,3.445710891576153,0.0,0.0,0.0,2.0,38.0,raw
+player_performances,yellow_cards,760125.0,,,,1.033501068903141,1.822505514399635,0.0,0.0,0.0,1.0,19.0,raw
+player_performances,second_yellow_cards,760125.0,,,,0.0278888340733432,0.1731597473338724,0.0,0.0,0.0,0.0,4.0,raw
+player_performances,direct_red_cards,760125.0,,,,0.0284032231540865,0.1733077958533012,0.0,0.0,0.0,0.0,4.0,raw
+player_performances,penalty_goals,760125.0,,,,0.0694543660582141,0.4194034213740863,0.0,0.0,0.0,0.0,14.0,raw
+player_performances,minutes_played,288065.0,,,,586.7052401367747,663.2899425896093,1.0,171.0,325.0,725.0,4411.0,raw
+player_performances,goals_conceded,760125.0,,,,0.8366610754810064,4.632766141567667,-1.0,0.0,0.0,0.0,104.0,raw
+player_performances,clean_sheets,760125.0,,,,0.1975280381516198,1.1965885768894247,0.0,0.0,0.0,0.0,29.0,raw
+team_competitions_seasons,club_id,1304.0,,,,19503.807515337423,28418.43473900539,1.0,1043.25,5683.0,25720.25,132098.0,raw
+team_competitions_seasons,team_name,1304,1304,Olympiacos Piraeus (683),1,,,,,,,,raw
+team_competitions_seasons,season_id,1304.0,,,,2024.0,0.0,2024.0,2024.0,2024.0,2024.0,2024.0,raw
+team_competitions_seasons,competition_name,1244,107,Primera Nacional,36,,,,,,,,raw
+team_competitions_seasons,competition_id,1244,110,ARG2,36,,,,,,,,raw
+team_competitions_seasons,club_division,1244,107,Primera Nacional,36,,,,,,,,raw
+team_competitions_seasons,_last_modified_at,1304,1304,2025-08-06 19:02:08,1,,,,,,,,raw
+team_details,club_id,1304.0,,,,19503.807515337423,28418.43473900539,1.0,1043.25,5683.0,25720.25,132098.0,raw
+team_details,club_slug,1304,1304,olympiakos-piraus,1,,,,,,,,raw
+team_details,club_name,1304,1304,Olympiacos Piraeus (683),1,,,,,,,,raw
+team_details,logo_url,1304,1296,https://tmssl.akamaized.net//images/wappen/head/default.png?lm=1457423031,9,,,,,,,,raw
+team_details,country_name,1304,46,Italy,209,,,,,,,,raw
+team_details,season_id,1304.0,,,,2024.0,0.0,2024.0,2024.0,2024.0,2024.0,2024.0,raw
+team_details,competition_id,1244,110,ARG2,36,,,,,,,,raw
+team_details,competition_slug,1244,107,primera-nacional,36,,,,,,,,raw
+team_details,competition_name,1244,107,Primera Nacional,36,,,,,,,,raw
+team_details,club_division,1244,107,Primera Nacional,36,,,,,,,,raw
+team_details,source_url,1304,1304,https://www.transfermarkt.com/olympiakos-piraus/startseite/verein/683/saison_id/2024,1,,,,,,,,raw
+team_details,_last_modified_at,1304,1304,2025-08-06 19:02:08,1,,,,,,,,raw
+player_profiles,player_id,40738.0,,,,717173.185674309,377768.7748516006,2857.0,393051.0,700284.5,1045121.75,1435458.0,raw
+player_profiles,player_slug,40738,39805,paulinho,9,,,,,,,,raw
+player_profiles,player_name,40547,40547,Alessandro Luchetti (1058343),1,,,,,,,,raw
+player_profiles,player_image_url,40737,27962,https://img.a.transfermarkt.technology/portrait/header/default.jpg,12776,,,,,,,,raw
+player_profiles,name_in_home_country,23056,23034,김태환,3,,,,,,,,raw
+player_profiles,date_of_birth,40095,7718,2007-01-01,40,,,,,,,,raw
+player_profiles,place_of_birth,32230,9366,London,476,,,,,,,,raw
+player_profiles,country_of_birth,32230,182,Italy,3068,,,,,,,,raw
+player_profiles,height,40735.0,,,,146.7665398306125,72.31531023723024,0.0,172.0,180.0,186.0,210.0,raw
+player_profiles,citizenship,40727,2000,Italy,4866,,,,,,,,raw
+player_profiles,is_eu,40738,2,True,27837,,,,,,,,raw
+player_profiles,position,40737,16,Defender - Centre-Back,6921,,,,,,,,raw
+player_profiles,main_position,40737,4,Defender,13165,,,,,,,,raw
+player_profiles,foot,32429,3,right,23158,,,,,,,,raw
+player_profiles,current_club_id,40737.0,,,,18573.84503031642,27912.67284001763,1.0,897.0,5623.0,23565.0,133521.0,raw
+player_profiles,current_club_name,40737,4095,Without Club,2160,,,,,,,,raw
+player_profiles,joined,39898,1663,2025-07-01,7514,,,,,,,,raw
+player_profiles,contract_expires,28917,138,2026-06-30,9726,,,,,,,,raw
+player_profiles,outfitter,4177,33,Nike,1684,,,,,,,,raw
+player_profiles,social_media_url,13987,13984,http://www.instagram.com/salvi1991/,2,,,,,,,,raw
+player_profiles,player_agent_id,26669.0,,,,5666.993363080731,4080.025801917953,1.0,2295.0,4959.0,8738.0,14915.0,raw
+player_profiles,player_agent_name,28120,3390,Wasserman,755,,,,,,,,raw
+player_profiles,contract_option,3103,15,club option 1 year,1275,,,,,,,,raw
+player_profiles,date_of_last_contract_extension,7426,1137,2025-07-01,86,,,,,,,,raw
+player_profiles,on_loan_from_club_id,2836.0,,,,16284.313469675599,26396.464497898716,2.0,826.0,4263.0,16704.0,132806.0,raw
+player_profiles,on_loan_from_club_name,2836,1124,AA Argentinos Juniors,19,,,,,,,,raw
+player_profiles,contract_there_expires,1769,31,2027-06-30,530,,,,,,,,raw
+player_profiles,second_club_url,1362,534,/daegu-fc-reserve/startseite/verein/40856,26,,,,,,,,raw
+player_profiles,second_club_name,1363,1168,Manchester City UEFA U19,17,,,,,,,,raw
+player_profiles,third_club_url,48,28,/krc-genk-uefa-u19/startseite/verein/76579,9,,,,,,,,raw
+player_profiles,third_club_name,48,43,Sporting Lissabon UEFA U19,3,,,,,,,,raw
+player_profiles,fourth_club_url,2,2,/slovan-bratislava-uefa-u19/startseite/verein/76796,1,,,,,,,,raw
+player_profiles,fourth_club_name,2,2,Slovan Bratislava UEFA U19,1,,,,,,,,raw
+player_profiles,date_of_death,6,6,06.08.2025 (25),1,,,,,,,,raw
+df_teams_season,club_id,96.0,,,,1276.9479166666667,2996.695195043302,3.0,149.5,424.0,1042.5,23826.0,filtered
+df_teams_season,team_name,96,96,West Ham United (379),1,,,,,,,,filtered
+df_teams_season,season_id,96.0,,,,2024.0,0.0,2024.0,2024.0,2024.0,2024.0,2024.0,filtered
+df_teams_season,competition_name,96,5,Premier League,20,,,,,,,,filtered
+df_teams_season,competition_id,96,5,GB1,20,,,,,,,,filtered
+df_teams_season,club_division,96,5,Premier League,20,,,,,,,,filtered
+df_teams_season,_last_modified_at,96,96,2025-08-06 18:17:42,1,,,,,,,,filtered
+df_teams_details,club_id,96.0,,,,1276.9479166666667,2996.695195043302,3.0,149.5,424.0,1042.5,23826.0,filtered
+df_teams_details,club_slug,96,96,west-ham-united,1,,,,,,,,filtered
+df_teams_details,club_name,96,96,West Ham United (379),1,,,,,,,,filtered
+df_teams_details,logo_url,96,96,https://tmssl.akamaized.net//images/wappen/head/379.png?lm=1464675260,1,,,,,,,,filtered
+df_teams_details,country_name,96,6,England,20,,,,,,,,filtered
+df_teams_details,season_id,96.0,,,,2024.0,0.0,2024.0,2024.0,2024.0,2024.0,2024.0,filtered
+df_teams_details,competition_id,96,5,GB1,20,,,,,,,,filtered
+df_teams_details,competition_slug,96,5,premier-league,20,,,,,,,,filtered
+df_teams_details,competition_name,96,5,Premier League,20,,,,,,,,filtered
+df_teams_details,club_division,96,5,Premier League,20,,,,,,,,filtered
+df_teams_details,source_url,96,96,https://www.transfermarkt.com/west-ham-united/startseite/verein/379/saison_id/2024,1,,,,,,,,filtered
+df_teams_details,_last_modified_at,96,96,2025-08-06 18:17:42,1,,,,,,,,filtered
+df_teams_details,team_name,96,96,West Ham United,1,,,,,,,,filtered
+df_players_profile,player_id,2684.0,,,,518043.5115499255,282914.2533719054,3333.0,297490.25,485285.5,706976.0,1390649.0,filtered
+df_players_profile,player_slug,2684,2678,david-lopez,2,,,,,,,,filtered
+df_players_profile,player_name,2676,2676,Edson Álvarez (401356),1,,,,,,,,filtered
+df_players_profile,player_image_url,2684,2641,https://img.a.transfermarkt.technology/portrait/header/default.jpg,44,,,,,,,,filtered
+df_players_profile,name_in_home_country,1736,1736,Edson Omar Álvarez Velázquez,1,,,,,,,,filtered
+df_players_profile,date_of_birth,2684,2126,1999-01-08,4,,,,,,,,filtered
+df_players_profile,place_of_birth,2650,1512,London,76,,,,,,,,filtered
+df_players_profile,country_of_birth,2650,110,Spain,344,,,,,,,,filtered
+df_players_profile,height,2684.0,,,,182.58755588673623,14.862977394960016,0.0,178.0,184.0,188.0,206.0,filtered
+df_players_profile,citizenship,2684,486,Spain,323,,,,,,,,filtered
+df_players_profile,is_eu,2684,2,True,2264,,,,,,,,filtered
+df_players_profile,position,2684,13,Defender - Centre-Back,484,,,,,,,,filtered
+df_players_profile,main_position,2684,4,Defender,911,,,,,,,,filtered
+df_players_profile,foot,2670,3,right,1876,,,,,,,,filtered
+df_players_profile,current_club_id,2684.0,,,,1350.093517138599,3111.862529236693,3.0,150.0,506.0,1047.0,23826.0,filtered
+df_players_profile,current_club_name,2684,96,Arsenal FC,60,,,,,,,,filtered
+df_players_profile,joined,2672,534,2025-07-01,252,,,,,,,,filtered
+df_players_profile,contract_expires,2505,14,2026-06-30,662,,,,,,,,filtered
+df_players_profile,outfitter,964,14,adidas,415,,,,,,,,filtered
+df_players_profile,social_media_url,2070,2070,http://www.instagram.com/edsonnalvarez/?hl=es,1,,,,,,,,filtered
+df_players_profile,player_agent_id,2377.0,,,,4436.416070677325,3971.6042634832156,1.0,786.0,3618.0,7012.0,14741.0,filtered
+df_players_profile,player_agent_name,2469,712,Wasserman,111,,,,,,,,filtered
+df_players_profile,contract_option,264,11,Option for a further year,110,,,,,,,,filtered
+df_players_profile,date_of_last_contract_extension,841,527,2025-07-04,9,,,,,,,,filtered
+df_players_profile,on_loan_from_club_id,115.0,,,,2345.791304347826,8085.2432022960575,5.0,171.0,430.0,1048.0,73883.0,filtered
+df_players_profile,on_loan_from_club_name,115,71,SSC Napoli,6,,,,,,,,filtered
+df_players_profile,contract_there_expires,104,9,2027-06-30,41,,,,,,,,filtered
+df_players_profile,second_club_url,39,25,/borussia-dortmund-ii/startseite/verein/17,4,,,,,,,,filtered
+df_players_profile,second_club_name,39,37,SV Werder Bremen II,3,,,,,,,,filtered
+df_players_profile,third_club_url,3,3,/fc-bayern-munchen-uefa-u19/startseite/verein/41585,1,,,,,,,,filtered
+df_players_profile,third_club_name,3,3,Bayern Munich UEFA U19,1,,,,,,,,filtered
+df_players_profile,fourth_club_url,0,0,,,,,,,,,,filtered
+df_players_profile,fourth_club_name,0,0,,,,,,,,,,filtered
+df_players_profile,date_of_death,0,0,,,,,,,,,,filtered
+df_player_injured,player_id,14818.0,,,,362673.77014441893,211457.27248838055,3333.0,199321.0,338425.0,485584.0,1193867.0,filtered
+df_player_injured,season_name,14818,18,24/25,2883,,,,,,,,filtered
+df_player_injured,injury_reason,14818,290,unknown injury,1109,,,,,,,,filtered
+df_player_injured,from_date,14817,3178,2022-10-10,28,,,,,,,,filtered
+df_player_injured,end_date,14695,3145,2025-06-30,50,,,,,,,,filtered
+df_player_injured,days_missed,14817.0,,,,34.5441722345954,50.46428830221806,1.0,8.0,17.0,37.0,686.0,filtered
+df_player_injured,games_missed,14818.0,,,,5.247604265083007,7.478355259788407,0.0,1.0,3.0,6.0,122.0,filtered
+df_player_performance,player_id,72739.0,,,,401287.1355393943,248185.45243241484,3333.0,203853.0,357164.0,555076.0,1390649.0,filtered
+df_player_performance,season_name,72739,46,24/25,8108,,,,,,,,filtered
+df_player_performance,competition_id,72739,856,CL,3264,,,,,,,,filtered
+df_player_performance,competition_name,72739,1012,UEFA Champions League,3126,,,,,,,,filtered
+df_player_performance,team_id,72739.0,,,,5083.35011479399,11263.56264676879,1.0,273.0,800.0,3938.0,120038.0,filtered
+df_player_performance,team_name,72739,2433,Manchester City,881,,,,,,,,filtered
+df_player_performance,nb_in_group,72739.0,,,,10.468799406095767,11.865605642796723,1.0,2.0,4.0,17.0,46.0,filtered
+df_player_performance,nb_on_pitch,72739.0,,,,8.573433783802361,10.714226043583123,0.0,1.0,3.0,12.0,46.0,filtered
+df_player_performance,goals,65902.0,,,,1.1442596582804772,2.6357947378491473,0.0,0.0,0.0,1.0,41.0,filtered
+df_player_performance,assists,72739.0,,,,0.7047388608586865,1.6315346827533275,0.0,0.0,0.0,1.0,26.0,filtered
+df_player_performance,own_goals,72739.0,,,,0.01745968462585408,0.13842790116287076,0.0,0.0,0.0,0.0,4.0,filtered
+df_player_performance,subed_in,72739.0,,,,1.7104854342237314,3.259881377215753,0.0,0.0,0.0,2.0,35.0,filtered
+df_player_performance,subed_out,72739.0,,,,2.023646187052338,3.7405353234545955,0.0,0.0,0.0,2.0,34.0,filtered
+df_player_performance,yellow_cards,72739.0,,,,1.089360590604765,1.9258689789143024,0.0,0.0,0.0,1.0,19.0,filtered
+df_player_performance,second_yellow_cards,72739.0,,,,0.027261854026038302,0.17124133917432674,0.0,0.0,0.0,0.0,4.0,filtered
+df_player_performance,direct_red_cards,72739.0,,,,0.026698194916069784,0.1691090573090253,0.0,0.0,0.0,0.0,4.0,filtered
+df_player_performance,penalty_goals,72739.0,,,,0.07953092563824084,0.4709218101229268,0.0,0.0,0.0,0.0,14.0,filtered
+df_player_performance,minutes_played,30744.0,,,,622.1243494665625,753.5911737009998,1.0,162.0,309.0,726.0,4140.0,filtered
+df_player_performance,goals_conceded,72739.0,,,,1.1504144956625744,5.840892352015156,0.0,0.0,0.0,0.0,82.0,filtered
+df_player_performance,clean_sheets,72739.0,,,,0.29186543669833237,1.5696750964525448,0.0,0.0,0.0,0.0,29.0,filtered
+df_player_market_values,player_id,2658.0,,,,512741.46914973663,278930.5130391007,3333.0,295923.75,480057.5,699251.0,1390649.0,filtered
+df_player_market_values,date_unix,2658,32,2025-06-16,440,,,,,,,,filtered
+df_player_market_values,value,2658.0,,,,11477864.936042137,17961090.187145337,0.0,1500000.0,5000000.0,15000000.0,200000000.0,filtered
