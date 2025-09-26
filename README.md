@@ -24,3 +24,11 @@ To ensure reproducibility, we provide a script (`download_data.py`) that downloa
 1. Install requirements:
 you open a new terminal and write: pip install gdown
 2. run the (`download_data.py`) file 
+
+## 📂 Estructura del Proyecto
+
+- **`_reports/`** → Contiene reportes estadísticos antes y después de limpiar los datos (media, mediana, valores nulos, etc.).
+- **`plots/`** → Contiene visualizaciones (como histogramas, barras, etc.) que representan la distribución de las variables más relevantes.
+- **`Main_code.py`** → Script principal que realiza la limpieza de los datos, genera los reportes estadísticos y crea las visualizaciones.
+- **`download_data.py`** → Script para descargar automáticamente los archivos de datos desde una fuente externa.
+- **`.gitignore`** → Evita que archivos innecesarios (como temporales, entornos virtuales o datos sensibles) se suban al repositorio.
