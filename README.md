@@ -22,13 +22,15 @@ To ensure reproducibility, we provide a script (`download_data.py`) that downloa
 
 ## 📥 How to Acces the Data
 1. Install requirements:
-you open a new terminal and write: pip install gdown
+you open a new terminal and write: pip install -r requirements.txt
 2. run the (`download_data.py`) file 
+3. run the (`Data_module.py`) file 
+4. you are able now to run Model_Module.ipynb choosing the kernel (.venv)
 
 ## 📂 Estructura del Proyecto
 
-- **`_reports/`** → Contiene reportes estadísticos antes y después de limpiar los datos (media, mediana, valores nulos, etc.).
-- **`plots/`** → Contiene visualizaciones (como histogramas, barras, etc.) que representan la distribución de las variables más relevantes.
-- **`Main_code.py`** → Script principal que realiza la limpieza de los datos, genera los reportes estadísticos y crea las visualizaciones.
-- **`download_data.py`** → Script para descargar automáticamente los archivos de datos desde una fuente externa.
+- **`_reports/`** → Contiene reportes estadísticos antes y después de limpiar los datos (media, mediana, valores nulos, etc.), asi como el codigo optimizado por chat gpt de la primera entrega del proyecto con los codigos que aplican el reporte.
+- **`plots/`** → Contiene visualizaciones (como histogramas, barras, etc.) que representan la distribución de las variables más relevantes, pertenceientes de las variables basicas de la primera entrega.
+- **`Data_Module.py`** → Script principal que realiza la limpieza y enriquecimiento de los datos, asi como preparaciones enfocadas a la funcion objetivo   .
+- **`Model_module.ipynb`** → Script para desarrollar algoritmos de ML.
 - **`.gitignore`** → Evita que archivos innecesarios (como temporales, entornos virtuales o datos sensibles) se suban al repositorio.
