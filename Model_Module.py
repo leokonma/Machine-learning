@@ -61,9 +61,5 @@ player_season["discipline_rate"] = (player_season["yellow_cards"] + 2 * player_s
 # Role-based performance (optional)
 player_season["gc_per90"] = player_season["goals_conceded"] * 90 / player_season["minutes_played"].replace(0, np.nan)
 player_season["clean_sheet_rate"] = player_season["clean_sheets"] / player_season["matches_played"]
-
-# Fill NaNs safely
 player_season = player_season.fillna(0)
 
-print(player_season.head())
-print(player_season.shape)
