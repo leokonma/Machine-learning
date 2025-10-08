@@ -11,6 +11,14 @@ RAW_DIR = "data/raw"
 OUT_DIR = "data/processed/big5"
 OUT_DIR_FEATS = "data/processed/features"
 
+# ---- Base & Paths (absolute to this file) ----
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+def _p(*xs): return os.path.join(BASE_DIR, *xs)
+
+RAW_DIR = _p("data", "raw")
+OUT_DIR = _p("data", "processed", "big5")
+OUT_DIR_FEATS = _p("data", "processed", "features")
+
 # ---- Big-5 ----
 TOP_EUROPE_LEAGUES_ID = ["GB1", "ES1", "IT1", "L1", "FR1"]
 
@@ -577,12 +585,43 @@ def get_df_feats(refresh: bool = False, persist: bool = False) -> Tuple[pd.DataF
 
     return df_feats, feat_cols
 
-def get_df_feat(refresh: bool = False, persist: bool = False) -> pd.DataFrame:
-    """
-    Same as get_df_feats but returns ONLY the engineered DataFrame (df_feats).
-    """
-    df_feats, _ = get_df_feats(refresh=refresh, persist=persist)
-    return df_feats
+def get_df_feats(refresh: bool = False, persist: bool = False) -> Tuple[pd.DataFrame, List[str]]:
+    df_perf, df_prof, df_inj, df_mv, df_season, df_team = quick_tables(refresh=refresh, debug=False)
+
+    player_season = build_player_season(df_perf, df_prof)
+
+    player_season = add_ucl_winner_flag(
+        player_season,
+        mapping_path=os.path.join(RAW_DIR, "metadata/ucl_winners.csv")
+    )
+    player_season = add_ballon_dor_winner_flag(
+        player_season,
+        mapping_path=os.path.join(RAW_DIR, "metadata/ballon_dor_winners.csv")
+    )
+
+    df_feats, feat_cols = make_season_features(player_season)
+
+    # --- NEW: keep flags + include as numeric features ---
+    for col in ["ucl_winner", "ballon_dor_winner"]:
+        if col not in df_feats.columns:
+            df_feats[col] = False
+    df_feats["ucl_winner_int"] = df_feats["ucl_winner"].astype(int)
+    df_feats["ballon_dor_winner_int"] = df_feats["ballon_dor_winner"].astype(int)
+    for c in ["ucl_winner_int", "ballon_dor_winner_int"]:
+        if c not in feat_cols:
+            feat_cols.append(c)
+    # -----------------------------------------------------
+
+    if persist:
+        os.makedirs(OUT_DIR_FEATS, exist_ok=True)
+        try:
+            df_feats.to_parquet(os.path.join(OUT_DIR_FEATS, "df_feats.parquet"), index=False)
+        except Exception as e:
+            print("[WARN] Could not save parquet; saving CSV instead.\n", e)
+            df_feats.to_csv(os.path.join(OUT_DIR_FEATS, "df_feats.csv"), index=False)
+
+    return df_feats, feat_cols
+
 
 def load_df_feat_from_disk() -> pd.DataFrame:
     """
