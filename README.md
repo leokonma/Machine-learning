@@ -27,22 +27,24 @@ To ensure reproducibility, we provide a script called **`download_data.py`** tha
 1. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
-2. run the (`download_data.py`) file 
-3. run the (`Data_module.py`) file 
+2. run the (`A_Data_Download.py`) file 
+3. run the (`Data_cleaning.py`) file 
+4. run the (`Data_Enrichment.py`) file 
 4. you are able now to run Model_Module.ipynb choosing the kernel (.venv)
 
 ## 📂 Data Storage
 The raw data is **not stored in this repository** (to keep it lightweight).  
 Instead, all files live in **Google Drive**.
 
-To ensure reproducibility, we provide a script (`download_data.py`) that downloads all necessary folders automatically.
+To ensure reproducibility, we provide a script (`A_Data_Download.py`) that downloads all necessary folders automatically.
 ## 🧠 Project Structure
 
 - **📊 _reports/** → Contains detailed statistical reports before and after data cleaning (mean, median, missing values, etc.), as well as the optimized code version from the first project submission.  
 - **📈 plots/** → Stores all visualizations (histograms, bar charts, distributions, etc.) used to illustrate trends and insights.  
-- **🧹 Data_Module.py** → Core script responsible for cleaning, transforming, and enriching the raw data, preparing the final datasets for modeling.  
+- **🧹 Data_cleaning.py & Data_Enrichment.py** → Core script responsible for cleaning, transforming, and enriching the raw data, preparing the final datasets for modeling.  
 - **🤖 Model_Module.ipynb** → Jupyter Notebook for building, training, and evaluating machine learning models, including feature engineering and model performance analysis.  
-- **📦 requirements.txt** → Lists all Python dependencies required to run the project. Install them using `pip install -r requirements.txt`.  
+- **📦 requirements.txt** → Lists all Python dependencies required to run the project. Install them using 
+`pip install -r requirements.txt`.  
 - **🚫 .gitignore** → Specifies files and folders excluded from version control (temporary files, virtual environments, datasets, etc.).  
 
 ## Notes:
@@ -50,7 +52,7 @@ To ensure reproducibility, we provide a script (`download_data.py`) that downloa
 The project is compatible with Python 3.9+.
 Make sure to activate your virtual environment before running the scripts:
 
-source .venv/bin/activate   # macOS / Linux
-.venv\Scripts\activate      # Windows
+- source .venv/bin/activate   # macOS / Linux
+- .venv\Scripts\activate      # Windows
 
 *in case of being interest in the 1st deliver a template of the old code, revised by chat gpt is included in the report files, that code is not longer in the repo due to changes in the structure including modules*

@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 # we only import the minimal public API from core
-from Data_cleaning import get_core_filtered
+from Data_Cleaning import get_core_filtered
 
 # --- local minimal helpers (decouple features from core internals) ---
 def _first_existing(df: pd.DataFrame, candidates: Sequence[str]) -> Optional[str]:
