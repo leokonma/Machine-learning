@@ -107,14 +107,14 @@ def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.Data
     # -------------------- merge performance con perfil --------------------
     df = perf.merge(prof_small, on="player_id", how="left")
 
-  
-  # -------------------- calcular edad --------------------
+    # -------------------- calcular edad si no existe --------------------
     if "date_of_birth" in df.columns:
         df['date_of_birth'] = pd.to_datetime(df['date_of_birth'], errors='coerce')
         today = pd.Timestamp.today()
         df['age'] = (today - df['date_of_birth']).dt.days // 365
-        df['age'] = df['age'].fillna(df['age'].median())
 
+    # -------------------- eliminar filas sin edad --------------------
+    df = df.dropna(subset=["age"])
 
     if "minutes_played" in df.columns:
         df["minutes_played"] = df["minutes_played"].fillna(0)
@@ -164,6 +164,7 @@ def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.Data
     
     return ps
 
+
 def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
     df = player_season.copy()
     if "season_name" not in df.columns:
@@ -186,12 +187,14 @@ def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, Lis
         max_age, min_age = 35, 18
         df["age_penalty"] = 1 - ((df["age"] - min_age) / (max_age - min_age) * 0.5)
         df["age_penalty"] = df["age_penalty"].clip(0.5,1)  # límite inferior
-        df["age_penalty"] = df["age_penalty"].fillna(1)     # reemplaza NAs por 1
 
-        z_cols_to_penalize = ["g_per90_z","a_per90_z","ga_per90_z","gc_per90_z","clean_sheet_rate_z"]
-        for c in z_cols_to_penalize:
-            if c in df.columns:
-                df[c] = df[c] * df["age_penalty"]
+        # 🔹 dropear filas con NaN en age o age_penalty
+        df = df.dropna(subset=["age", "age_penalty"])
+
+    z_cols_to_penalize = ["g_per90_z","a_per90_z","ga_per90_z","gc_per90_z","clean_sheet_rate_z"]
+    for c in z_cols_to_penalize:
+        if c in df.columns:
+            df[c] = df[c] * df["age_penalty"]
 
     # Crear lags y deltas
     lag_base = ["ga_per90_z","g_per90_z","a_per90_z","gc_per90_z",
@@ -206,13 +209,13 @@ def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, Lis
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     feature_cols = [c for c in numeric_cols if c not in {"player_id","team_id","season_end_year"}]
 
-# asegurarnos de que age y age_penalty estén en feature_cols
+    # asegurarnos de que age y age_penalty estén en feature_cols
     for extra in ["age","age_penalty"]:
         if extra in df.columns and extra not in feature_cols:
             feature_cols.append(extra)
 
-
     return df, feature_cols
+
 
 # ===================== Aggregates & flags =====================
 def get_default_ballon_winners() -> pd.DataFrame:
