@@ -107,12 +107,13 @@ def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.Data
     # -------------------- merge performance con perfil --------------------
     df = perf.merge(prof_small, on="player_id", how="left")
 
-    # -------------------- calcular edad si no existe --------------------
+  
   # -------------------- calcular edad --------------------
     if "date_of_birth" in df.columns:
         df['date_of_birth'] = pd.to_datetime(df['date_of_birth'], errors='coerce')
         today = pd.Timestamp.today()
         df['age'] = (today - df['date_of_birth']).dt.days // 365
+        df['age'] = df['age'].fillna(df['age'].median())
 
 
     if "minutes_played" in df.columns:
@@ -182,11 +183,11 @@ def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, Lis
 
     # -------------------- penalización por edad --------------------
     if "age" in df.columns:
-        # ejemplo: factor lineal, 1 a 18 años, 0.5 a 35+, ajustable
         max_age, min_age = 35, 18
         df["age_penalty"] = 1 - ((df["age"] - min_age) / (max_age - min_age) * 0.5)
-        df["age_penalty"] = df["age_penalty"].clip(0.5,1)  # no penaliza más del 50%
-        # Aplicar penalización a métricas z estandarizadas (opcional)
+        df["age_penalty"] = df["age_penalty"].clip(0.5,1)  # límite inferior
+        df["age_penalty"] = df["age_penalty"].fillna(1)     # reemplaza NAs por 1
+
         z_cols_to_penalize = ["g_per90_z","a_per90_z","ga_per90_z","gc_per90_z","clean_sheet_rate_z"]
         for c in z_cols_to_penalize:
             if c in df.columns:
