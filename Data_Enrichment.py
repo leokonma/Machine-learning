@@ -89,17 +89,31 @@ def add_within_by_player(df: pd.DataFrame, cols: List[str]) -> pd.DataFrame:
             out[f"{c}_w"] = (out[c] - mu).fillna(0)
     return out
 
+from datetime import datetime
+
 # ========= Player-season builder =========
 def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.DataFrame:
     perf, prof = df_perf.copy(), df_prof.copy()
+    
     if "player_id" in perf.columns: perf["player_id"] = _to_str_id(perf["player_id"])
     if "player_id" in prof.columns: prof["player_id"] = _to_str_id(prof["player_id"])
 
-    prof_cols = ["player_id","player_name","height","position","main_position","foot"]
+    # -------------------- preparar columnas de perfil --------------------
+    prof_cols = ["player_id","player_name","date_of_birth","age",
+                 "height","position","main_position","foot"]
     prof_cols = [c for c in prof_cols if c in prof.columns]
     prof_small = prof[prof_cols].drop_duplicates(subset=["player_id"]) if prof_cols else prof.iloc[0:0]
 
+    # -------------------- merge performance con perfil --------------------
     df = perf.merge(prof_small, on="player_id", how="left")
+
+    # -------------------- calcular edad si no existe --------------------
+  # -------------------- calcular edad --------------------
+    if "date_of_birth" in df.columns:
+        df['date_of_birth'] = pd.to_datetime(df['date_of_birth'], errors='coerce')
+        today = pd.Timestamp.today()
+        df['age'] = (today - df['date_of_birth']).dt.days // 365
+
 
     if "minutes_played" in df.columns:
         df["minutes_played"] = df["minutes_played"].fillna(0)
@@ -112,6 +126,7 @@ def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.Data
     if team_name_col is None:
         df["__team_name_tmp__"] = ""; team_name_col = "__team_name_tmp__"
 
+    # -------------------- agregaciones --------------------
     agg_map = {
         "goals":"sum","assists":"sum","penalty_goals":"sum","own_goals":"sum",
         "yellow_cards":"sum","second_yellow_cards":"sum","direct_red_cards":"sum",
@@ -120,6 +135,7 @@ def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.Data
         "height":"mean","team_id":"last", team_name_col:"last",
         "competition_id":"last","competition_name":"last",
         "position":"last","main_position":"last","foot":"last","player_name":"last",
+        "date_of_birth":"last","age":"last"
     }
     agg_map = {k:v for k,v in agg_map.items() if k in df.columns}
 
@@ -144,26 +160,57 @@ def build_player_season(df_perf: pd.DataFrame, df_prof: pd.DataFrame) -> pd.Data
 
     for c in ["g_per90","a_per90","ga_per90","pen_share","discipline_rate","gc_per90","clean_sheet_rate"]:
         if c in ps.columns: ps[c] = ps[c].fillna(0)
+    
     return ps
 
 def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, List[str]]:
     df = player_season.copy()
     if "season_name" not in df.columns:
         raise KeyError("make_season_features: input must include 'season_name'.")
+
+    # Año final de la temporada
     df["season_end_year"] = season_end_year_from_name(df["season_name"])
+
+    # Columnas de rendimiento a estandarizar
     z_cols = ["ga_per90","g_per90","a_per90","gc_per90","clean_sheet_rate",
               "discipline_rate","pen_share","minutes_played","matches_played",
               "goals","assists","penalty_goals","own_goals","yellow_cards",
               "second_yellow_cards","direct_red_cards"]
+
+    # Estandarización por competición y temporada
     df = zscore_by_group(df, z_cols, group_cols=["competition_id","season_end_year"])
+
+    # -------------------- penalización por edad --------------------
+    if "age" in df.columns:
+        # ejemplo: factor lineal, 1 a 18 años, 0.5 a 35+, ajustable
+        max_age, min_age = 35, 18
+        df["age_penalty"] = 1 - ((df["age"] - min_age) / (max_age - min_age) * 0.5)
+        df["age_penalty"] = df["age_penalty"].clip(0.5,1)  # no penaliza más del 50%
+        # Aplicar penalización a métricas z estandarizadas (opcional)
+        z_cols_to_penalize = ["g_per90_z","a_per90_z","ga_per90_z","gc_per90_z","clean_sheet_rate_z"]
+        for c in z_cols_to_penalize:
+            if c in df.columns:
+                df[c] = df[c] * df["age_penalty"]
+
+    # Crear lags y deltas
     lag_base = ["ga_per90_z","g_per90_z","a_per90_z","gc_per90_z",
                 "clean_sheet_rate_z","discipline_rate_z","pen_share_z",
                 "minutes_played_z","matches_played_z"]
     df = add_lags_and_deltas(df, lag_base)
+
+    # Comportamiento relativo dentro del jugador
     within_cols = ["ga_per90","g_per90","a_per90","gc_per90","clean_sheet_rate","discipline_rate","pen_share"]
     df = add_within_by_player(df, within_cols)
+
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     feature_cols = [c for c in numeric_cols if c not in {"player_id","team_id","season_end_year"}]
+
+# asegurarnos de que age y age_penalty estén en feature_cols
+    for extra in ["age","age_penalty"]:
+        if extra in df.columns and extra not in feature_cols:
+            feature_cols.append(extra)
+
+
     return df, feature_cols
 
 # ===================== Aggregates & flags =====================

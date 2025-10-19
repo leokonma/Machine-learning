@@ -148,7 +148,6 @@ def _profiles_from_perf(profiles: pd.DataFrame, perf_big5: pd.DataFrame) -> pd.D
 
     out = pd.concat([by_id, by_slug, by_name], ignore_index=True)
     return out.drop_duplicates(subset=["player_id"]) if "player_id" in out.columns else out.drop_duplicates()
-
 # -------------------- orchestrator --------------------
 def build_filtered_tables_modular(
     tables: Dict[str, pd.DataFrame],
@@ -161,16 +160,36 @@ def build_filtered_tables_modular(
     player_profiles    = tables["player_profiles"].copy()
     player_performance = tables["player_performances"].copy()
 
+    # Validaciones y detección de columnas clave
     _validate_team_schema(team_season, team_details)
     team_id_col, club_name_col = _infer_team_columns(team_details)
 
+    # Filtrar Big-5 y añadir nombres canonizados
     df_teams_season, df_teams_details = filter_big5_teams(team_season, team_details, top_leagues)
     df_teams_details = add_team_name_canon(df_teams_details, club_name_col)
 
+    # Filtrar performances Big-5
     df_player_performance = _big5_performances_robust(
         player_performance, df_teams_details, top_leagues, team_id_col
     )
+
+    # Seleccionar perfiles relevantes
     df_players_profile = _profiles_from_perf(player_profiles, df_player_performance)
+
+    # -------------------- add date_of_birth & age --------------------
+    if 'player_id' in df_player_performance.columns and 'date_of_birth' in df_players_profile.columns:
+        df_player_performance = df_player_performance.merge(
+            df_players_profile[['player_id', 'date_of_birth']],
+            on='player_id',
+            how='left'
+        )
+        # Convertir a datetime
+        df_player_performance['date_of_birth'] = pd.to_datetime(
+            df_player_performance['date_of_birth'], errors='coerce'
+        )
+        # Calcular edad aproximada en años
+        today = pd.Timestamp.today()
+        df_player_performance['age'] = (today - df_player_performance['date_of_birth']).dt.days // 365
 
     if debug:
         _peek(df_teams_season,       "df_teams_season")
@@ -184,6 +203,7 @@ def build_filtered_tables_modular(
         "df_players_profile": df_players_profile,
         "df_player_performance": df_player_performance,
     }
+
 
 # -------- optional tiny wrapper for convenience --------
 def get_core_filtered(raw_dir: str) -> Dict[str, pd.DataFrame]:
