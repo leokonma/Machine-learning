@@ -237,11 +237,11 @@ def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, Lis
 # ===================== Aggregates & flags =====================
 def get_default_ballon_winners() -> pd.DataFrame:
     return pd.DataFrame({
-        "year": [2023, 2022, 2021, 2019, 2018, 2017, 2016, 2015, 2012, 2011, 2010, 2009],
+        "year": [2024 ,2023, 2022, 2021, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008],
         "player_name": [
-            "Lionel Messi", "Karim Benzema", "Lionel Messi", "Lionel Messi", "Luka Modric",
-            "Cristiano Ronaldo", "Cristiano Ronaldo", "Lionel Messi", "Lionel Messi",
-            "Lionel Messi", "Lionel Messi", "Lionel Messi"
+            "Rodri (357565)","Lionel Messi (28003)", "Karim Benzema (18922)", "Lionel Messi (28003)", "Lionel Messi (28003)", "Luka Modrić (27992)",
+            "Cristiano Ronaldo (8198)", "Cristiano Ronaldo (8198)", "Lionel Messi (28003)","Cristiano Ronaldo (8198)","Cristiano Ronaldo (8198)",
+            "Lionel Messi (28003)", "Lionel Messi (28003)", "Lionel Messi (28003)", "Lionel Messi (28003)","Cristiano Ronaldo (8198)"
         ],
     })
 
