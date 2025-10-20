@@ -174,38 +174,55 @@ def make_season_features(player_season: pd.DataFrame) -> Tuple[pd.DataFrame, Lis
     df["season_end_year"] = season_end_year_from_name(df["season_name"])
 
     # Columnas de rendimiento a estandarizar
-    z_cols = ["ga_per90","g_per90","a_per90","gc_per90","clean_sheet_rate",
-              "discipline_rate","pen_share","minutes_played","matches_played",
-              "goals","assists","penalty_goals","own_goals","yellow_cards",
-              "second_yellow_cards","direct_red_cards"]
+    z_cols = [
+        "ga_per90","g_per90","a_per90","gc_per90","clean_sheet_rate",
+        "discipline_rate","pen_share","minutes_played","matches_played",
+        "goals","assists","penalty_goals","own_goals",
+        "yellow_cards","second_yellow_cards","direct_red_cards"
+    ]
 
     # Estandarización por competición y temporada
-    df = zscore_by_group(df, z_cols, group_cols=["competition_id","season_end_year"])
+    df = zscore_by_group(df, z_cols, group_cols=["competition_id", "season_end_year"])
 
-    # -------------------- penalización por edad --------------------
+    # -------------------- improved penalization by age --------------------
     if "age" in df.columns:
-        max_age, min_age = 35, 18
-        df["age_penalty"] = 1 - ((df["age"] - min_age) / (max_age - min_age) * 0.5)
-        df["age_penalty"] = df["age_penalty"].clip(0.5,1)  # límite inferior
+        min_age, peak_age, max_age = 18, 27, 40
 
-        # 🔹 dropear filas con NaN en age o age_penalty
+        # normalize age within range
+        df["age_norm"] = df["age"].clip(min_age, max_age)
+
+        # piecewise nonlinear penalty:
+        df["age_penalty"] = np.where(
+            df["age_norm"] <= peak_age,
+            0.8 + 0.2 * ((df["age_norm"] - min_age) / (peak_age - min_age))**2,  # growth phase
+            1 - 0.5 * ((df["age_norm"] - peak_age) / (max_age - peak_age))**2    # decline phase
+        )
+
+        # clip and fill edge cases
+        df["age_penalty"] = df["age_penalty"].clip(0.5, 1.0).fillna(1.0)
+
+        # drop rows missing age data
         df = df.dropna(subset=["age", "age_penalty"])
 
-    z_cols_to_penalize = ["g_per90_z","a_per90_z","ga_per90_z","gc_per90_z","clean_sheet_rate_z"]
-    for c in z_cols_to_penalize:
-        if c in df.columns:
-            df[c] = df[c] * df["age_penalty"]
+        # apply age penalty to relevant z-score columns
+        z_cols_to_penalize = ["g_per90_z", "a_per90_z", "ga_per90_z", "gc_per90_z", "clean_sheet_rate_z"]
+        for c in z_cols_to_penalize:
+            if c in df.columns:
+                df[c] = df[c] * df["age_penalty"]
 
     # Crear lags y deltas
-    lag_base = ["ga_per90_z","g_per90_z","a_per90_z","gc_per90_z",
-                "clean_sheet_rate_z","discipline_rate_z","pen_share_z",
-                "minutes_played_z","matches_played_z"]
+    lag_base = [
+        "ga_per90_z","g_per90_z","a_per90_z","gc_per90_z",
+        "clean_sheet_rate_z","discipline_rate_z","pen_share_z",
+        "minutes_played_z","matches_played_z"
+    ]
     df = add_lags_and_deltas(df, lag_base)
 
     # Comportamiento relativo dentro del jugador
     within_cols = ["ga_per90","g_per90","a_per90","gc_per90","clean_sheet_rate","discipline_rate","pen_share"]
     df = add_within_by_player(df, within_cols)
 
+    # Seleccionar columnas numéricas
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     feature_cols = [c for c in numeric_cols if c not in {"player_id","team_id","season_end_year"}]
 
