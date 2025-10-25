@@ -1,58 +1,137 @@
-# ⚽ Machine Learning Project: Football Player & Team Data
+# 🧠 Machine Learning — Player Performance Analytics
 
-## 📊 Dataset Overview
-This project uses multiple datasets covering **players**, **teams**, **performances**, **market values**, and **transfers**.  
-Together, they allow an in-depth analysis of player careers and team dynamics.
+## 📋 Overview
+This project applies **machine learning and data analytics** to evaluate player performance in football (soccer).
+It explores how different **dimensionality reduction** and **clustering techniques** can help identify player profiles and potential predictors of elite performance (e.g., *Ballon d’Or–level indicators*).
 
-The available dataframes are:
-
-- **`player_injured_df`** → Records of player injuries, including dates and types.  
-- **`player_latest_market_value_df`** → Latest known market value of each player.  
-- **`player_performances_df`** → Club-level performances such as matches, goals, and assists.  
-- **`team_competitions_seasons_df`** → Teams’ participation in competitions by season.  
-- **`team_details_df`** → General metadata about teams (name, country, founding year, etc.).  
+The workflow covers every stage of the data pipeline — from **data acquisition and cleaning**, to **feature enrichment, analysis, and visualization**.
 
 ---
 
-## 📂 Data Storage
-The raw data is **not stored in this repository** to keep it lightweight.  
-Instead, all files are stored in **Google Drive**.  
+## ⚙️ Project Workflow
 
-To ensure reproducibility, we provide a script called **`download_data.py`** that automatically downloads all necessary folders.
+1. **Data Acquisition**
+   - `A_Data_Download.py` — Retrieves raw datasets and stores them locally.
+
+2. **Data Cleaning**
+   - `Data_Cleaning.py` — Cleans and structures the raw data.
+
+3. **Feature Enrichment**
+   - `Data_Enrichment.py` — Builds additional variables (per 90 metrics, ratios, lag features).
+
+4. **Exploratory Analysis**
+   - `Correlation_Analysis.ipynb` — Examines variable relationships and correlations.
+
+5. **Dimensionality Reduction**
+   - `PCA_Dim_Reduc.ipynb` — Principal Component Analysis.
+   - `Lasso_Dim_Reduc.ipynb` — Feature selection using LASSO.
+   - `Random_Forest_Dim_Reduc.ipynb` — Variable importance based on Random Forests.
+
+6. **Clustering and Player Segmentation**
+   - `k-means_Clustering.ipynb` — K-Means clustering.
+   - `Hierarchical_ClusteringL.ipynb` — Hierarchical clustering.
+   - `Density_Clustering.ipynb` — Density-based clustering.
+
+7. **Reporting and Visualization**
+   - Reports and summaries in `_reports/`
+   - Plots and graphics in `plots/`
 
 ---
 
-## 📥 How to Access the Data
+## 📂 Repository Structure
 
-1. Install the required dependencies:
-   ```bash
-   pip install -r requirements.txt
-2. run the (`A_Data_Download.py`) file 
-3. run the (`Data_cleaning.py`) file 
-4. run the (`Data_Enrichment.py`) file 
-4. you are able now to run Model_Module.ipynb choosing the kernel (.venv)
+```
+Machine-learning-main/
+├── .gitignore
+├── A_Data_Download.py
+├── Correlation_Analysis.ipynb
+├── Data_Cleaning.py
+├── Data_Enrichment.py
+├── Density_Clustering.ipynb
+├── Hierarchical_ClusteringL.ipynb
+├── Lasso_Dim_Reduc.ipynb
+├── PCA_Dim_Reduc.ipynb
+├── Random_Forest_Dim_Reduc.ipynb
+├── k-means_Clustering.ipynb
+├── requirements.txt
+├── _reports/
+│   ├── codigo_chat_summary.py
+│   ├── summary_all.csv
+│   ├── summary_all.xlsx
+│   ├── summary_tables_filtered.csv
+│   └── summary_tables_raw.csv
+└── plots/
+    ├── Age_distribution.png
+    ├── clean_sheets.png
+    ├── goals_and_assists.png
+    ├── goals_concided.png
+    ├── minutes_played.png
+    ├── player_position.png
+    ├── squat_markt_value.png
+    └── team_goals.png
+```
 
-## 📂 Data Storage
-The raw data is **not stored in this repository** (to keep it lightweight).  
-Instead, all files live in **Google Drive**.
+---
 
-To ensure reproducibility, we provide a script (`A_Data_Download.py`) that downloads all necessary folders automatically.
-## 🧠 Project Structure
+## 🚀 How to Run
 
-- **📊 _reports/** → Contains detailed statistical reports before and after data cleaning (mean, median, missing values, etc.), as well as the optimized code version from the first project submission.  
-- **📈 plots/** → Stores all visualizations (histograms, bar charts, distributions, etc.) used to illustrate trends and insights.  
-- **🧹 Data_cleaning.py & Data_Enrichment.py** → Core script responsible for cleaning, transforming, and enriching the raw data, preparing the final datasets for modeling.  
-- **🤖 Model_Module.ipynb** → Jupyter Notebook for building, training, and evaluating machine learning models, including feature engineering and model performance analysis.  
-- **📦 requirements.txt** → Lists all Python dependencies required to run the project. Install them using 
-`pip install -r requirements.txt`.  
-- **🚫 .gitignore** → Specifies files and folders excluded from version control (temporary files, virtual environments, datasets, etc.).  
+### 1️⃣ Clone the repository
+```bash
+git clone https://github.com/leokonma/Machine-learning.git
+cd Machine-learning
+```
 
-## Notes:
+### 2️⃣ Create a virtual environment and install dependencies
+```bash
+python -m venv venv
+source venv/bin/activate        # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-The project is compatible with Python 3.9+.
-Make sure to activate your virtual environment before running the scripts:
+### 3️⃣ Execute the pipeline
+```bash
+python A_Data_Download.py
+python Data_Cleaning.py
+python Data_Enrichment.py
+```
 
-- source .venv/bin/activate   # macOS / Linux
-- .venv\Scripts\activate      # Windows
+Then open the analysis notebooks such as:
+```
+PCA_Dim_Reduc.ipynb
+k-means_Clustering.ipynb
+```
 
-*in case of being interest in the 1st deliver a template of the old code, revised by chat gpt is included in the report files, that code is not longer in the repo due to changes in the structure including modules*
+---
+
+## 📊 Example Results
+
+Example visualizations can be found in the `plots/` directory:
+- Age and position distribution  
+- Goals vs. assists  
+- Team market value vs. goals  
+- Clustering segmentation by performance  
+
+---
+
+## 🧩 Tech Stack
+
+| Category | Tools |
+|-----------|-------|
+| Languages | Python 3.10+ |
+| Libraries | pandas, numpy, scikit-learn, matplotlib, seaborn |
+| Environment | Jupyter Notebooks, Visual Studio Code |
+| Version Control | Git / GitHub |
+
+---
+
+## 📈 Future Improvements
+- Add predictive modeling for player performance forecasting.  
+- Implement interactive dashboards with Plotly or Streamlit.  
+- Automate reporting from pipeline outputs.
+
+---
+
+## 🧑‍💻 Author
+**Leonardo Sánchez Castillo**  
+Data Analyst & Machine Learning student  
+
