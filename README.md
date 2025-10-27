@@ -54,21 +54,6 @@ Machine-learning-main/
 ├── Random_Forest_Dim_Reduc.ipynb
 ├── k-means_Clustering.ipynb
 ├── requirements.txt
-├── _reports/
-│   ├── codigo_chat_summary.py
-│   ├── summary_all.csv
-│   ├── summary_all.xlsx
-│   ├── summary_tables_filtered.csv
-│   └── summary_tables_raw.csv
-└── plots/
-    ├── Age_distribution.png
-    ├── clean_sheets.png
-    ├── goals_and_assists.png
-    ├── goals_concided.png
-    ├── minutes_played.png
-    ├── player_position.png
-    ├── squat_markt_value.png
-    └── team_goals.png
 ```
 
 ---
