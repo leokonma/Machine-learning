@@ -32,10 +32,6 @@ The workflow covers every stage of the data pipeline — from **data acquisition
    - `Hierarchical_ClusteringL.ipynb` — Hierarchical clustering.
    - `Density_Clustering.ipynb` — Density-based clustering.
 
-7. **Reporting and Visualization**
-   - Reports and summaries in `_reports/`
-   - Plots and graphics in `plots/`
-
 ---
 
 ## 📂 Repository Structure
