@@ -78,19 +78,9 @@ python Data_Enrichment.py
 
 Then open the analysis notebooks such as:
 ```
-PCA_Dim_Reduc.ipynb
+Random_Forest_Dim_Reduc.ipynb
 k-means_Clustering.ipynb
 ```
-
----
-
-## 📊 Example Results
-
-Example visualizations can be found in the `plots/` directory:
-- Age and position distribution  
-- Goals vs. assists  
-- Team market value vs. goals  
-- Clustering segmentation by performance  
 
 ---
 
