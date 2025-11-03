@@ -1,7 +1,6 @@
 gdown
-pandas as pd
-matplotlib as plt
-numpy  as np
-scikit-learn as skl
-seaborn as sns
-statsmodels.api as sm
+pandas 
+matplotlib 
+numpy  
+scikit-learn 
+seaborn 
