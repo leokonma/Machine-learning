@@ -1,108 +1,182 @@
 # 🧠 Machine Learning — Player Performance Analytics
 
 ## 📋 Overview
-This project applies **machine learning and data analytics** to evaluate player performance in football (soccer).
-It explores how different **dimensionality reduction** and **clustering techniques** can help identify player profiles and potential predictors of elite performance (e.g., *Ballon d’Or–level indicators*).
 
-The workflow covers every stage of the data pipeline — from **data acquisition and cleaning**, to **feature enrichment, analysis, and visualization**.
+This project applies **Machine Learning**, **feature engineering**, and **unsupervised methods** to analyze football (soccer) player performance.
+It focuses on:
+
+* 🧼 Data cleaning & structuring
+* ⚙️ Automated feature enrichment (per90 stats, lag features, weighted metrics)
+* 📉 Dimensionality reduction (PCA, LASSO, RF importance)
+* 🎯 Clustering & player segmentation
 
 ---
 
 ## ⚙️ Project Workflow
 
-1. **Data Acquisition**
-   - `A_Data_Download.py` — Retrieves raw datasets and stores them locally.
+### 1️⃣ Data Acquisition
 
-2. **Data Cleaning**
-   - `Data_Cleaning.py` — Cleans and structures the raw data.
+`A_Data_Download.py` → Downloads datasets to `data/raw/`.
 
-3. **Feature Enrichment**
-   - `Data_Enrichment.py` — Builds additional variables (per 90 metrics, ratios, lag features).
+### 2️⃣ Data Cleaning
 
-4. **Exploratory Analysis**
-   - `Correlation_Analysis.ipynb` — Examines variable relationships and correlations.
+`src/data_cleaning.py`
 
-5. **Dimensionality Reduction**
-   - `PCA_Dim_Reduc.ipynb` — Principal Component Analysis.
-   - `Lasso_Dim_Reduc.ipynb` — Feature selection using LASSO.
-   - `Random_Forest_Dim_Reduc.ipynb` — Variable importance based on Random Forests.
+### 3️⃣ Feature Enrichment
 
-6. **Clustering and Player Segmentation**
-   - `k-means_Clustering.ipynb` — K-Means clustering.
-   - `Hierarchical_ClusteringL.ipynb` — Hierarchical clustering.
-   - `Density_Clustering.ipynb` — Density-based clustering.
+`src/data_enrichment.py`
+
+### 4️⃣ Exploratory & Unsupervised Analysis (notebooks)
+
+Located in `/unsupervised methods/`.
+
+### 5️⃣ Dimensionality Reduction
+
+PCA, LASSO, Random Forest notebooks.
+
+### 6️⃣ Clustering
+
+K-means, Hierarchical, DBSCAN.
 
 ---
 
-## 📂 Repository Structure
+## 📂 Repository Structure (Updated)
 
 ```
-Machine-learning-main/
-├── .gitignore
+Machine-learning/
+│
+├── data/
+│   ├── raw/
+│   ├── clean/
+│   └── enriched/
+│
+├── src/
+│   ├── __init__.py
+│   ├── data_cleaning.py
+│   ├── data_enrichment.py
+│   ├── data_loading.py
+│   ├── utils_plot.py
+│   └── utils_stats.py
+│
+├── unsupervised methods/
+│   ├── Correlation_Analysis.ipynb
+│   ├── PCA_Dim_Reduc.ipynb
+│   ├── Lasso_Dim_Reduc.ipynb
+│   ├── Random_Forest_Dim_Reduc.ipynb
+│   ├── k-means_Clustering.ipynb
+│   ├── Hierarchical_Clustering.ipynb
+│   └── Density_Clustering.ipynb
+│
 ├── A_Data_Download.py
-├── Correlation_Analysis.ipynb
-├── Data_Cleaning.py
-├── Data_Enrichment.py
-├── Density_Clustering.ipynb
-├── Hierarchical_ClusteringL.ipynb
-├── Lasso_Dim_Reduc.ipynb
-├── PCA_Dim_Reduc.ipynb
-├── Random_Forest_Dim_Reduc.ipynb
-├── k-means_Clustering.ipynb
 ├── requirements.txt
+└── README.md
 ```
 
 ---
 
-## 🚀 How to Run
+# 🚀 How to Run the Project
 
-### 1️⃣ Clone the repository
+## 1️⃣ Clone the repository
+
 ```bash
 git clone https://github.com/leokonma/Machine-learning.git
 cd Machine-learning
 ```
 
-### 2️⃣ Create a virtual environment and install dependencies
-```bash
-python -m venv venv
-source venv/bin/activate        # On Windows: venv\Scripts\activate
+---
+
+## 2️⃣ Create & activate virtual environment (**Windows PowerShell**)
+
+PowerShell blocks script execution by default, so first:
+
+### 🟦 **Bypass PowerShell policy (safe, temporary)**
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+```
+
+This only affects the current PowerShell window — safe and recommended.
+
+### 🟩 Create venv
+
+```powershell
+python -m venv .venv
+```
+
+### 🟩 Activate venv (PowerShell)
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+You will see:
+
+```
+(.venv) PS C:\Users\...>
+```
+
+---
+
+## 3️⃣ Install dependencies
+
+```powershell
 pip install -r requirements.txt
 ```
 
-### 3️⃣ Execute the pipeline
-```bash
-python A_Data_Download.py
-python Data_Cleaning.py
-python Data_Enrichment.py
+---
+
+## 4️⃣ Run data pipeline scripts
+
+Use the `-m` flag so Python treats `src/` as a package:
+
+```powershell
+python -m src.data_cleaning
+python -m src.data_enrichment
 ```
 
-Then open the analysis notebooks such as:
+---
+
+## 5️⃣ Run notebooks
+
+Launch Jupyter:
+
+```powershell
+jupyter notebook
 ```
-Random_Forest_Dim_Reduc.ipynb
-k-means_Clustering.ipynb
-```
+
+Or open the folder in VS Code and run the notebooks directly.
+
+Imports work thanks to the automatic project-root resolver.
 
 ---
 
 ## 🧩 Tech Stack
 
-| Category | Tools |
-|-----------|-------|
-| Languages | Python 3.10+ |
-| Libraries | pandas, numpy, scikit-learn, matplotlib, seaborn |
-| Environment | Jupyter Notebooks, Visual Studio Code |
-| Version Control | Git / GitHub |
+| Category        | Tools                     |
+| --------------- | ------------------------- |
+| Languages       | Python 3.10+              |
+| Data            | pandas, numpy             |
+| ML              | scikit-learn, statsmodels |
+| Visualization   | seaborn, matplotlib       |
+| Environment     | VS Code, Jupyter          |
+| Version Control | Git + GitHub              |
 
 ---
 
 ## 📈 Future Improvements
-- Add predictive modeling for player performance forecasting.  
-- Implement interactive dashboards with Plotly or Streamlit.  
-- Automate reporting from pipeline outputs.
+
+* Add supervised prediction models (Random Forest, XGBoost)
+* Deploy dashboard with Streamlit or Dash
+* Add SHAP or LIME interpretability
+* MLOps CI/CD pipeline (GitHub Actions)
 
 ---
 
 ## 🧑‍💻 Author
-**Leonardo Sánchez Castillo**  
-Data Analyst & Machine Learning student  
 
+**Leonardo Sánchez Castillo**
+Data Analyst & Machine Learning Student
+
+---
+
+Si quieres, puedo añadir **badges**, **un logo**, o una **sección de troubleshooting** para errores comunes (PowerShell, imports, venv, etc.).
