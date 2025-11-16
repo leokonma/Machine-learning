@@ -52,11 +52,9 @@ Machine-learning/
 │
 ├── src/
 │   ├── __init__.py
+│   ├── a_data_download.py
 │   ├── data_cleaning.py
 │   ├── data_enrichment.py
-│   ├── data_loading.py
-│   ├── utils_plot.py
-│   └── utils_stats.py
 │
 ├── unsupervised methods/
 │   ├── Correlation_Analysis.ipynb
@@ -67,7 +65,6 @@ Machine-learning/
 │   ├── Hierarchical_Clustering.ipynb
 │   └── Density_Clustering.ipynb
 │
-├── A_Data_Download.py
 ├── requirements.txt
 └── README.md
 ```
