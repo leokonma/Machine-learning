@@ -1,18 +1,22 @@
 
-
 # 🧠 Machine Learning — Player Performance Analytics
+
+### *Feature Engineering · Dimensionality Reduction · Clustering · Award Prediction*
+
+---
 
 ## 📋 Overview
 
-This project applies **Machine Learning**, **feature engineering**, **unsupervised analysis**, and **supervised prediction** to model football (soccer) player performance.
+This project applies **Machine Learning**, **advanced feature engineering**, **unsupervised analysis**, and **supervised prediction** to analyze football (soccer) player performance across multiple seasons.
 
 It includes:
 
-* 🧼 Data cleaning & structuring
-* ⚙️ Advanced feature enrichment (per90, lags, deltas, z-scores, weighted metrics)
-* 📉 Dimensionality reduction (PCA, LASSO, RF importance)
-* 🎯 Clustering for player segmentation
-* 🔮 Supervised learning for Ballon d’Or–style predictions
+* 🧼 **Data cleaning** & structuring
+* ⚙️ **Advanced feature enrichment** (per90, lags, deltas, z-scores, weighted metrics, UCL strength)
+* 📉 **Dimensionality reduction** (Correlation pruning, PCA, LASSO, Random Forest importance)
+* 🎯 **Clustering** for player segmentation
+* 🔮 **Supervised learning** for Balon d'Or–style rare-event prediction
+* 🏆 **Prediction for the 2025 season**
 
 ---
 
@@ -21,53 +25,110 @@ It includes:
 ### 1️⃣ Data Acquisition
 
 `src/a_data_download.py`
+Downloads and stores raw datasets (2008–2025).
 
 ### 2️⃣ Data Cleaning
 
 `src/data_cleaning.py`
+Cleans, normalizes, merges, and validates raw data.
 
 ### 3️⃣ Feature Enrichment
 
 `src/data_enrichment.py`
-
-### 4️⃣ Unsupervised Analysis
-
-Located in `/unsupervised methods/`.
-
-Includes PCA, LASSO, RF importance, and clustering (K-means, hierarchical, DBSCAN).
-
-### 5️⃣ Supervised Analysis (NEW)
-
-Located in `/supervised_methods/`.
-
-Full prediction pipeline:
-
-| Notebook                              | Purpose                                                                                    |
-| ------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **01_build_supervised_dataset.ipynb** | Build the training dataset (labels, target engineering, lag handling, leakage prevention). |
-| **02_benchmark_models.ipynb**         | Compare Logistic, Random Forest, KNN, SVM, XGBoost (baseline metrics).                     |
-| **03_model_trainin.ipynb**            | Train the best-performing model (currently Random Forest).                                 |
-| **04_hyperparameter_tuning_rf.ipynb** | Grid-search, randomized search, Bayesian optimization (depending on config).               |
-| **05_test_prediction.ipynb**          | Predict on unseen seasons (e.g., 2025), evaluate model generalization.                     |
-| **prediction.ipynb**                  | Final standalone predictor for deployment-style usage.                                     |
-
-And stored models:
-
-* `rf_baseline.pkl`
-* `rf_best_tuned.pkl`
-* `rf_final_2008_2022.pkl`
+Generates enriched features:
+per90 metrics · lags · deltas · z-scores · weighted metrics · trophies · UCL progression · team strength.
 
 ---
 
-## 📂 Repository Structure (Updated)
+## 🔍 Unsupervised Analysis
+
+📁 Located in `/unsupervised methods/`
+
+Includes:
+
+* Correlation Analysis
+* PCA Dimensionality Reduction
+* LASSO Feature Selection
+* Random Forest Feature Importance
+* K-means Clustering
+* Hierarchical Clustering
+* Density-based Clustering (DBSCAN)
+
+These notebooks support **feature selection** and **player archetype discovery**.
+
+---
+
+# 🤖 Supervised Learning Pipelines (UPDATED)
+
+The project contains **two fully separated supervised pipelines**:
+
+---
+
+# ⭐ 1. **FINAL PIPELINE — Logistic Regression (Feature-Selected)**
+
+📁 Located in `/supervised_methods/`
+
+This is the **official and recommended** prediction pipeline.
+
+| Notebook                                 | Purpose                                                        |
+| ---------------------------------------- | -------------------------------------------------------------- |
+| **01_lr_build_supervised_dataset.ipynb** | Build ML dataset (labels, target engineering, leak-safe lags). |
+| **02_lr_benchmark_models.ipynb**         | Compare LR, RF, XGB, SVM, KNN on selected features.            |
+| **03_lr_model_trainin.ipynb**            | Train Logistic Regression baseline (ElasticNet).               |
+| **04_lr_hyperparameter_tuning_lr.ipynb** | RandomizedSearchCV tuning for LR (C, l1_ratio).                |
+| **05_lr_test_prediction.ipynb**          | Evaluate on seasons 2023–2024 (out-of-sample test).            |
+| **prediction.ipynb**                     | **Final prediction for season 2025**.                          |
+
+### 🔎 Key characteristics:
+
+* Uses **only final_features** (30 best features selected by Corr + RF importance).
+* **Pipeline architecture:**
+  `ColumnTransformer` → `StandardScaler` + `OneHotEncoder` → `SMOTE` → `Logistic Regression`.
+* **Zero data leakage** across all stages.
+* Winner detection for Ballon d’Or-style rare events.
+* Stored model: `lr_tuned_pipeline.pkl`
+* **Best model by AUC (≈ 0.99978)** and best calibration for probability ranking.
+
+👉 **This is the main model used for predicting the top candidates in 2025.**
+
+---
+
+# 🌲 2. **LEGACY PIPELINE — Random Forest (All Features)**
+
+📁 Located in `/supervised_methods/`
+
+These notebooks represent your **original approach**, preserved for transparency:
+
+| Notebook                              | Purpose                                                  |
+| ------------------------------------- | -------------------------------------------------------- |
+| **06_build_supervised_dataset.ipynb** | Early version of dataset builder (no feature selection). |
+| **07_benchmark_models.ipynb**         | Benchmark using all features.                            |
+| **08_model_trainin.ipynb**            | Train Random Forest baseline.                            |
+| **09_hyperparameter_tuning_rf.ipynb** | RandomizedSearchCV tuning for RF.                        |
+| **010_test_prediction.ipynb**         | RF final evaluation / alternative prediction.            |
+
+### Characteristics:
+
+* Uses **all raw enriched features** (no dimensionality reduction).
+* Includes **RF hyperparameter tuning** (n_estimators, depth, etc.).
+* Serves as **comparison baseline** to validate improvements.
+* Stored RF artifacts:
+* `rf_best_tuned.pkl`
+  
+
+👉 *Useful for understanding model evolution, but **not recommended** for final deployment.*
+
+---
+
+# 📂 Repository Structure (Updated)
 
 ```
 Machine-learning/
 │
 ├── data/
-│   ├── raw/
-│   ├── clean/
-│   └── enriched/
+│   ├── raw/            ← original downloaded datasets
+│   ├── clean/          ← cleaned intermediate datasets
+│   └── enriched/       ← enriched with lags/deltas/UCL strength
 │
 ├── src/
 │   ├── __init__.py
@@ -86,15 +147,19 @@ Machine-learning/
 │   └── Density_Clustering.ipynb
 │
 ├── supervised_methods/
-│   ├── 01_build_supervised_dataset.ipynb
-│   ├── 02_benchmark_models.ipynb
-│   ├── 03_model_trainin.ipynb
-│   ├── 04_hyperparameter_tuning_rf.ipynb
-│   ├── 05_test_prediction.ipynb
-│   ├── prediction.ipynb
-│   ├── rf_baseline.pkl
-│   ├── rf_best_tuned.pkl
-│   └── rf_final_2008_2022.pkl
+│   ├── 01_lr_build_supervised_dataset.ipynb
+│   ├── 02_lr_benchmark_models.ipynb
+│   ├── 03_lr_model_trainin.ipynb
+│   ├── 04_lr_hyperparameter_tuning_lr.ipynb
+│   ├── 05_lr_test_prediction.ipynb
+│   ├── lr_tuned_pipeline.pkl     ← final model
+│   │
+│   ├── 06_build_supervised_dataset.ipynb
+│   ├── 07_benchmark_models.ipynb
+│   ├── 08_model_trainin.ipynb
+│   ├── 09_hyperparameter_tuning_rf.ipynb
+│   ├── 010_test_prediction.ipynb
+│   └── prediction.ipynb <- legacy prediction           
 │
 ├── requirements.txt
 └── README.md
@@ -121,46 +186,49 @@ python -m venv .venv
 
 ## 3️⃣ Install dependencies
 
-```powershell
+```bash
 pip install -r requirements.txt
 ```
 
 ## 4️⃣ Run data pipelines
 
-```powershell
+```bash
 python -m src.data_cleaning
 python -m src.data_enrichment
 ```
 
-## 5️⃣ Run notebooks
-
-In VS Code or Jupyter.
+## 5️⃣ Run notebooks (VS Code or Jupyter)
 
 ---
 
-## 🔮 Supervised Learning Info (NEW)
+# 🔮 Supervised Learning Summary
 
-The supervised pipeline generates a classification target based on seasonal performance and predicts the probability of a high-impact award-level season.
+### Logistic Regression Pipeline (FINAL):
 
-Key ML components:
+* Best model for rare-event prediction
+* Best AUC and probability calibration
+* Feature-selected
+* Predicts 2025 final candidates
 
-* Model evaluation: ROC-AUC, recall@k, precision, confusion matrix
-* Hyperparameter tuning for Random Forest
-* Full-year prediction for **season 2025**
-* Stored model artifacts (.pkl) for reproducibility
+### Random Forest Pipeline (LEGACY):
+
+* First-generation pipeline
+* Uses all features
+* Serves as baseline comparison
 
 ---
 
-## 🧩 Tech Stack
+# 🧩 Tech Stack
 
-| Category        | Tools                                         |
-| --------------- | --------------------------------------------- |
-| Data            | pandas, numpy                                 |
-| ML              | scikit-learn, xgboost (optional), statsmodels |
-| Visualization   | seaborn, matplotlib                           |
-| Dev             | VS Code, Jupyter                              |
-| Version Control | Git + GitHub                                  |
+| Category        | Tools                                   |
+| --------------- | --------------------------------------- |
+| Data            | pandas, numpy                           |
+| ML              | scikit-learn, imbalanced-learn, xgboost |
+| Visualization   | seaborn, matplotlib                     |
+| Dev             | VS Code, Jupyter                        |
+| Version Control | Git + GitHub                            |
 
+---
 
 ## 👤 Author
 
